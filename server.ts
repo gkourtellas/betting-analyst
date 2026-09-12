@@ -6,6 +6,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+const BASE_PATH = "/football";
+
 async function startServer() {
   const app = express();
   const PORT = 3000;
@@ -13,7 +15,7 @@ async function startServer() {
   app.use(express.json());
 
   // API Route to execute the analysis live
-  app.post("/api/run-analysis", async (req, res) => {
+  app.post(`${BASE_PATH}/api/run-analysis`, async (req, res) => {
     console.log("Starting live analysis execution in TypeScript...");
     try {
       const timeWindowHours = Number(req.body?.timeWindowHours);
@@ -40,14 +42,14 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (req, res) => {
+    app.use(BASE_PATH, express.static(distPath));
+    app.get(`${BASE_PATH}/*`, (req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
     });
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}${BASE_PATH}/`);
   });
 }
 

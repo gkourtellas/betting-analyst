@@ -126,7 +126,7 @@ export default function App() {
     }, 1000);
 
     try {
-      const response = await fetch("/api/run-analysis", {
+      const response = await fetch(`${import.meta.env.BASE_URL}api/run-analysis`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ timeWindowHours, sport })
